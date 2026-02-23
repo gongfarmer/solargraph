@@ -591,7 +591,6 @@ module Solargraph
         return if pending - queued_gemspec_cache.length < 1
 
         catalog
-        sync_catalog
       else
         logger.info "Caching #{spec.name} #{spec.version}"
         Thread.new do
@@ -606,7 +605,6 @@ module Solargraph
           end
           end_cache_progress
           catalog
-          sync_catalog
         end
       end
     end
@@ -617,6 +615,7 @@ module Solargraph
                   api_map.uncached_rbs_collection_gemspecs -
                   queued_gemspec_cache -
                   cache_errors.to_a
+      cacheable.uniq!
       return cacheable unless cacheable.empty?
 
       queued_gemspec_cache
